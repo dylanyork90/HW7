@@ -36,7 +36,7 @@ app.get('/uploadData', function(req, res) {
         let aToy = {
             id: id,
             date: date,
-            rate: rate
+            
         }
     app.dataArray.push(aToy);
     }
@@ -56,7 +56,7 @@ app.get('/postData', function(req, res) {
         let aToy = {
             id: id,
             date: date,
-            rate: rate
+            
         }
     app.dataArray.push(aToy);
     }
@@ -65,6 +65,36 @@ app.get('/postData', function(req, res) {
      });
   });
 
+  //ToysByYear Page
+  app.get('/dateData', function(req, res){
+
+
+    app.duplicateArray = JSON.parse(JSON.stringify(app.dataArray ));
+
+
+    app.duplicateArray.sort(dynamicSort("date"));
+
+    res.render('pages/dateData', { 
+        dataArray: app.duplicateArray
+     });
+
+  });
+
+  function dynamicSort(property){
+      var sortOrder = 1;
+
+      if(property[0] === "-"){
+          sortOrder = -1;
+          property = property.substr(1);
+      }
+      return function (a,b){
+          if(sortOrder == -1){
+              return b[property].localeCompare(a[property]);
+          }else{
+              return a[property].localeCompare(b[property]);
+          }
+      }
+  }
 
 
 
